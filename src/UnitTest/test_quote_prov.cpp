@@ -87,6 +87,7 @@ static sgx_ql_get_revocation_info_t sgx_ql_get_revocation_info;
 static sgx_ql_free_quote_config_t sgx_ql_free_quote_config;
 static sgx_ql_get_quote_config_t sgx_ql_get_quote_config;
 static sgx_ql_set_logging_function_t sgx_ql_set_logging_function;
+static sgx_ql_set_logging_callback_t sgx_ql_set_logging_callback;
 static sgx_ql_free_quote_verification_collateral_t
     sgx_ql_free_quote_verification_collateral;
 static sgx_ql_free_qve_identity_t sgx_ql_free_qve_identity;
@@ -300,6 +301,11 @@ static HINSTANCE LoadFunctions()
         reinterpret_cast<sgx_ql_set_logging_function_t>(
             GetProcAddress(hLibCapdll, "sgx_ql_set_logging_function"));
     EXPECT_NE(sgx_ql_set_logging_function, nullptr);
+
+    sgx_ql_set_logging_callback =
+        reinterpret_cast<sgx_ql_set_logging_callback_t>(
+            GetProcAddress(hLibCapdll, "sgx_ql_set_logging_callback"));
+    EXPECT_NE(sgx_ql_set_logging_callback, nullptr);
 
     sgx_ql_free_quote_verification_collateral =
         reinterpret_cast<sgx_ql_free_quote_verification_collateral_t>(
@@ -672,6 +678,7 @@ void ReloadLibrary(libary_type_t* library, bool set_logging_callback = true)
     if (set_logging_callback)
     {
         ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
+        ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
     }
 }
 
@@ -913,6 +920,7 @@ TEST(testQuoteProv, quoteProviderTestsData)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
+    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
 
     //
     // Get the data from the service
@@ -931,6 +939,7 @@ TEST(testQuoteProv, quoteProviderTestsV2DataFromService)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
+    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
 
     //
     // Get the data from the service
@@ -951,6 +960,7 @@ TEST(testQuoteProv, quoteProviderTestsV2Data)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
+    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
 
     //
     // Get the data from the service
@@ -991,6 +1001,7 @@ TEST(testQuoteProv, quoteProviderTestsV3Data)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
+    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
 
     //
     // Get the data from the service
@@ -1011,6 +1022,7 @@ TEST(testQuoteProv, testWithoutLogging)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
+    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
 
     //
     // Get the data from the service
@@ -1031,6 +1043,7 @@ TEST(testQuoteProv, testRestrictAccessToFilesystem)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
+    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
 
     //
     // Get the data from the service

@@ -115,4 +115,8 @@ typedef void (
 typedef sgx_plat_error_t (*sgx_ql_set_logging_function_t)(
     sgx_ql_logging_function_t logger);
 
+/// Set the callback used for recording log information.
+typedef quote3_error_t (*sgx_ql_set_logging_callback_t)(
+    sgx_ql_logging_function_t logger);
+
 #endif // #ifndef PLATFORM_QUOTE_PROVIDER_H

@@ -1667,6 +1667,13 @@ extern "C" sgx_plat_error_t sgx_ql_set_logging_function(
     return SGX_PLAT_ERROR_OK;
 }
 
+extern "C" quote3_error_t sgx_ql_set_logging_callback(
+    sgx_ql_logging_function_t logger)
+{
+    logger_callback = logger;
+    return SGX_QL_SUCCESS;
+}
+
 extern "C" quote3_error_t sgx_ql_free_quote_verification_collateral(
     sgx_ql_qve_collateral_t* p_quote_collateral)
 {
