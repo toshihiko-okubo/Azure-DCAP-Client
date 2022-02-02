@@ -910,8 +910,6 @@ TEST(testQuoteProv, quoteProviderTestsData)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
-    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
-
     //
     // Get the data from the service
     //
@@ -928,7 +926,6 @@ TEST(testQuoteProv, quoteProviderTestsData)
 TEST(testQuoteProv, quoteProviderTestsV2DataFromService)
 {
     libary_type_t library = LoadFunctions();
-    ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
     ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
 
     //
@@ -950,8 +947,6 @@ TEST(testQuoteProv, quoteProviderTestsV2Data)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
-    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
-
     //
     // Get the data from the service
     //
@@ -969,7 +964,6 @@ TEST(testQuoteProv, quoteProviderTestsV2Data)
 TEST(testQuoteProv, quoteProviderTestsV3DataFromService)
 {
     libary_type_t library = LoadFunctions();
-    ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
     ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
 
     //
@@ -992,8 +986,6 @@ TEST(testQuoteProv, quoteProviderTestsV3Data)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
-    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
-
     //
     // Get the data from the service
     //
@@ -1013,8 +1005,6 @@ TEST(testQuoteProv, testWithoutLogging)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
-    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
-
     //
     // Get the data from the service
     //
@@ -1034,8 +1024,6 @@ TEST(testQuoteProv, testRestrictAccessToFilesystem)
 {
     libary_type_t library = LoadFunctions();
     ASSERT_TRUE(SGX_PLAT_ERROR_OK == sgx_ql_set_logging_function(Log));
-    ASSERT_TRUE(SGX_QL_SUCCESS == sgx_ql_set_logging_callback(Log));
-
     //
     // Get the data from the service
     //
