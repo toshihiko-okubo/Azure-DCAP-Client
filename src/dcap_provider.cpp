@@ -688,20 +688,16 @@ static std::string build_tcb_info_url(const std::string& fmspc)
     std::string version = get_collateral_version();
     std::string client_id = get_client_id();
     std::stringstream tcb_info_url;
-    tcb_info_url << get_base_url();
+    tcb_info_url << "https://api.trustedservices.intel.com/sgx/certification";
 
     if (!version.empty())
     {
         tcb_info_url << "/" << version;
     }
-    tcb_info_url << "/tcb/";
-    tcb_info_url << format_as_hex_string(fmspc.c_str(), fmspc.size()) << "?";
 
-    if (!client_id.empty())
-    {
-        tcb_info_url << "clientid=" << client_id << "&";
-    }
-    tcb_info_url << API_VERSION_LEGACY;
+    tcb_info_url << "/tcb?";
+    tcb_info_url << "fmspc=" << format_as_hex_string(fmspc.c_str(), fmspc.size());
+
     return tcb_info_url.str();
 }
 
@@ -727,7 +723,7 @@ static std::string build_enclave_id_url(
     std::stringstream qe_id_url;
     expected_issuer_chain_header = headers::QE_ISSUER_CHAIN;
 
-    qe_id_url << get_base_url();
+    qe_id_url << "https://api.trustedservices.intel.com/sgx/certification";
 
     // Select the correct issuer header name
     if (!version.empty())
@@ -745,13 +741,8 @@ static std::string build_enclave_id_url(
         return "";
     }
 
-    qe_id_url << "/" << (qve ? "qveid" : "qeid") << "?";
+    qe_id_url << "/" << (qve ? "qveid" : "/qe/identity");
 
-    if (!client_id.empty())
-    {
-        qe_id_url << "clientid=" << client_id << '&';
-    }
-    qe_id_url << API_VERSION_LEGACY;
     return qe_id_url.str();
 }
 
@@ -814,22 +805,22 @@ static quote3_error_t get_collateral(
 
         retval = convert_to_intel_error(get_issuer_chain_operation);
 
-        if (retval == SGX_QL_SUCCESS)
-        {
-            std::string cache_control;
-            auto get_cache_header_operation = get_unescape_header(*curl_operation, headers::CACHE_CONTROL, &cache_control);
-            retval = convert_to_intel_error(get_cache_header_operation);
-            if (retval == SGX_QL_SUCCESS)
-            {
-                // Update the cache 
-                time_t expiry = 0;
-                if (get_cache_expiration_time(cache_control, url, expiry))
-                {
-                    local_cache_add(url, expiry, response_body.size(), response_body.data());
-                    local_cache_add(issuer_chain_cache_name, expiry, issuer_chain.size(), issuer_chain.c_str());
-                }
-            }
-        }
+//        if (retval == SGX_QL_SUCCESS)
+//        {
+//            std::string cache_control;
+//            auto get_cache_header_operation = get_unescape_header(*curl_operation, headers::CACHE_CONTROL, &cache_control);
+//            retval = convert_to_intel_error(get_cache_header_operation);
+//            if (retval == SGX_QL_SUCCESS)
+//            {
+//                // Update the cache
+//                time_t expiry = 0;
+//                if (get_cache_expiration_time(cache_control, url, expiry))
+//                {
+//                    local_cache_add(url, expiry, response_body.size(), response_body.data());
+//                    local_cache_add(issuer_chain_cache_name, expiry, issuer_chain.size(), issuer_chain.c_str());
+//                }
+//            }
+//        }
 
         return retval;
     }
@@ -972,19 +963,19 @@ extern "C" quote3_error_t sgx_ql_get_quote_config(
         assert(buf == buf_end);
 
         // Get the cache control header
-        std::string cache_control;
-        auto get_cache_header_operation = get_unescape_header(
-            *curl, headers::CACHE_CONTROL, &cache_control);
-
-        auto retval = convert_to_intel_error(get_cache_header_operation);
-        if (retval == SGX_QL_SUCCESS)
-        {            
-            time_t expiry;
-            if (get_cache_expiration_time(cache_control, cert_url, expiry))
-            {
-                local_cache_add(cert_url, expiry, buf_size, *pp_quote_config);
-            }
-        }
+//        std::string cache_control;
+//        auto get_cache_header_operation = get_unescape_header(
+//            *curl, headers::CACHE_CONTROL, &cache_control);
+//
+//        auto retval = convert_to_intel_error(get_cache_header_operation);
+//        if (retval == SGX_QL_SUCCESS)
+//        {
+//            time_t expiry;
+//            if (get_cache_expiration_time(cache_control, cert_url, expiry))
+//            {
+//                local_cache_add(cert_url, expiry, buf_size, *pp_quote_config);
+//            }
+//        }
     }
     catch (const std::bad_alloc&)
     {
